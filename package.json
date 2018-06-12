@@ -1,0 +1,14 @@
+{
+  "name": "fans",
+  "version": "1.0.0",
+  "description": "Fan UI",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Wallace McGee",
+  "license": "ISC",
+  "dependencies": {
+    "BigAssFansAPI": "^1.1.1"
+  }
+}
