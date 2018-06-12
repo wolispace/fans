@@ -1,12 +1,97 @@
 <html>
  <head>
   <title>Fans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+   body {
+    font-family: sans-serif;
+    background-color: lavender;
+   }
+
+   .button-group {
+    padding: 5px;
+   }
+
+   label {
+    font-weight: bold;
+    font-size:120%;
+    font-color: slategrey;
+   }
+
+   button {
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 150%;
+   }
+
+   .isoff {
+    border:3px solid maroon;
+    background: lightcoral;
+   }
+
+   .ison {
+    border:3px solid darkgreen;
+    background: lightgreen;
+   }
+
+   .state-on {
+    border-color: black;
+   }
+
   </style>
-  <script>
-  </script>
  </head>
  <body>
   <h1>Fans</h1>
+  <div class="button-group">
+    <button type="button" id="bedroom_fanlight_0" class="isoff">Off</button>
+    <button type="button" id="bedroom_fanlight_1" class="ison">Low</button>
+    <button type="button" id="bedroom_fanlight_9" class="ison">High</button>
+    <label>Bedroom</label>
+  </div>
+  <div class="button-group">
+    <button type="button" id="greenroom_light_0" class="isoff">Off</button>
+    <button type="button" id="greenroom_light_1" class="ison">Low</button>
+    <button type="button" id="greenroom_light_9" class="ison">High</button>
+   <label>Green room</label>
+  </div>
+  <div class="button-group">
+    <button type="button" id="livingroom_light_0" class="isoff">Off</button>
+    <button type="button" id="livingroom_light_1" class="ison">Low</button>
+    <button type="button" id="livingroom_light_9" class="ison">High</button>
+   <label>Living room</label>
+  </div>
  </body>
+ <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+ <script>
+   $('document').ready(
+    function () {
+     var url = '';
+     $('#bedroom_fanlight_0').on('click', function () {
+      var data = {device: 'Bedroom Fan', 'brightness': 0}; 
+      $('#bedroom_fanlight_0').addClass('state-on'); 
+      $.getJSON(url, data, function (res) {
+        console.log(res);
+       });
+      });
+      $('#bedroom_fanlight_1').on('click', function () {
+      var data = {device: 'Bedroom Fan', 'brightness': 1}; 
+      $('#bedroom_fanlight_1').addClass('state-on'); 
+      $.getJSON(url, data, function (res) {
+        console.log(res);
+       });
+      });
+      $('#bedroom_fanlight_9').on('click', function () {
+      var data = {device: 'Bedroom Fan', 'brightness': 9}; 
+      $('#bedroom_fanlight_9').addClass('state-on'); 
+      $.getJSON(url, data, function (res) {
+        console.log(res);
+       });
+      });
+
+     
+     
+    }
+   );
+  </script>
 </html>     
