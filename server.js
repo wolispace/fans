@@ -27,19 +27,21 @@ function handler (req, res) {
     // do nothing..
     console.log('doing nothing');
   } else {
-    console.log(myFans);
     var params = extractUrlParams(stuff);
-    console.log('processing ', params);
-    //console.log('fans', myFans);
-
-    var fanName = params['device'];
+    var fanName = params.device + ' ' + 'Fan';
     var oneFan = myFans[fanName];
-    console.log('Controlling ' + fanName + ' ', params);
+    console.log('Controlling ' + fanName + ' ' +params.part + ' = ' + params.state);
     if (oneFan) {
-      console.log(fanName + ' found. brightness was [' + oneFan.light.brightness +']');
-      if (params.brightness) {
-        oneFan.light.brightness = params.brightness;
-        console.log(fanName + ' found. brightness is now [' + oneFan.light.brightness +']');
+      if (params.part === 'light') {
+        if (params.state) {
+          oneFan.light.brightness = params.state;
+          console.log(fanName + ' found. brightness is now [' + oneFan.light.brightness +']');
+        }
+      } else {
+        if (params.state) {
+          oneFan.fan.speed = params.state;
+          console.log(fanName + ' found. speed is now [' + oneFan.fan.speed +']');
+        }
       }
     }
     console.log('Giving browser', params);
