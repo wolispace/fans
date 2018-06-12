@@ -3,7 +3,6 @@ var settings = {port: 4444, root: ''};
 const app = require('http').createServer(handler),
     fs = require('fs'),
     bigAssApi = require("BigAssFansAPI/BigAssApi"),
-    url = require('url');
     myMaster = new bigAssApi.FanMaster(3); // Expect only one fan in my setup
     
 var myFans = {};
@@ -19,7 +18,6 @@ console.log("server is on " + settings.port);
 // handle requests..
 function handler (req, res) {
   // no need for url passing - just look for css or html and show that otherwise control a fanx@ 
-  var call = url.parse(req.url);
   var stuff = req.url.substring(1);
   console.log(stuff);
   if (stuff === '') {
@@ -36,20 +34,9 @@ function serverStaticFile (fileName, res) {
         res.writeHead(404);
         return res.end('File not found: '+fileName);
       } else {
-        res.writeHead(200, getContentType(fileName));
+        res.writeHead(200, "text/html");
         return res.end(data);
       }
     }
   );
-}
-
-function getContentType (fileName) {
-  var extensions = {
-    ".html" : "text/html",
-    ".css" : "text/css",
-    ".js" : "application/javascript",
-    ".png" : "image/png",
-    ".gif" : "image/gif",
-    ".jpg" : "image/jpeg"};
-  return {'Content-Type': extensions[path.extname(fileName)]};
 }
