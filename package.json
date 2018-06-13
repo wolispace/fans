@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Fan UI",
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wolispace/fans.git"
+  },
   "scripts": {
     "test": "test"
   },
