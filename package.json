@@ -9,6 +9,7 @@
   "author": "Wallace McGee",
   "license": "ISC",
   "dependencies": {
-    "BigAssFansAPI": "^1.1.1"
+    "BigAssFansAPI": "^1.1.1",
+    "node-lifx": "^0.8.0"
   }
 }

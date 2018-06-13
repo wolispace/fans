@@ -10,16 +10,17 @@
 
    h2 {
     margin: 5 0 0 0;
+    color: darkslategrey;
    }
 
    .button-group {
-    padding: 5px;
+    padding-left: 10px;
    }
 
    label {
     font-weight: bold;
-    font-size:120%;
-    font-color: slategrey;
+    font-size: 120%;
+    color: darkslategrey;
    }
 
    button {
@@ -40,10 +41,6 @@
     background: lightgreen;
    }
 
-   .state-on {
-    border-color: black;
-   }
-
   </style>
  </head>
  <body>
@@ -54,75 +51,42 @@
     function () {
      
      var url = '';
-     var devices = {
-      fans: ['Bedroom', 'Living Room', 'Green Room'],
-      lights: ['Bedroom light', 'Hallway light', 'Kitchen light', 'Living room light']   
-     };
 
-     var fanParts = ['fan', 'light'];
-     var deviceSteps = {light: [0, 1, 9], fan: [0,1,2,3]};
-     var stepLabels = {0: 'Off', 1: 'Low', 2: 'Med', 3: 'High', 9: 'High'};
+     var rooms = {
+      'Bedroom' : ['Fan', 'Light', 'Lamp'],
+      'Living Room' : ['Fan', 'Light', 'Lamp'],
+      'Kitchen' : ['Lamp'],
+      'Hallway' : ['Lamp'],
+      'Green Room' : ['Fan', 'Light'] 
+     }
 
-     var html = '<div class="device-group fans-group">'; 
-     $('body').append(html);
+     var steps = {Light: [0, 1, 9], Fan: [0, 1, 2, 3], Lamp: [0, 50, 100]};
+     var stepLabels = {0: 'Off', 1: 'Low', 2: 'Med', 3: 'High', 9: 'High', 10: 'Low', 50: 'Med', 100: 'High'};
 
-     devices.fans.forEach( function (device) {
-      html = '<div class="room-group"><h2>' + device + '</h2>'; 
+     Object.keys(rooms).forEach( function (roomName) {
+      var html = '<h2>' + roomName + '</h2>'; 
       $('body').append(html);
-      fanParts.forEach( function (part) {
-       html = '<div class="button-group">'; 
+
+      rooms[roomName].forEach( function (part) {
+       html = '&nbsp;&nbsp;';
        $('body').append(html);
-       deviceSteps[part].forEach( function (step) {
-        var html = '';
-        var id = device.replace(' ', '_') + '-' + part + '-' + step;
+       steps[part].forEach( function (step) {
+        var id = roomName.replace(' ', '_') + '-' + part + '-' + step;
         var state = (step === 0) ? 'isoff' : 'ison';
-        html += '<button type="button" id="'+id+'" class="'+state+'">' + stepLabels[step] + '</button>'; 
+        html = '<button type="button" id="'+id+'" class="'+state+'">' + stepLabels[step] + '</button>'; 
         $('body').append(html);
-        var data = {device: device, part: part, state: step};
+        var data = {room: roomName, part: part, state: step};
         $('#' + id).on('click', function() {
          $.getJSON(url, data, function (res) {
           console.log(res);
          });
         });
        });
-       html = '<label>' + part + '</label></html>';
+       html = '<label>' + part + '</label><br/>';
        $('body').append(html);
-
       });
-      html = '</div>';
-      $('body').append(html);
-        
      });
+    });
 
-     html = '</div>';
-     $('body').append(html);
-
-     var url = '';
-     $('#bedroom_fanlight_0').on('click', function () {
-      var data = {device: 'Bedroom Fan', 'brightness': 0}; 
-      $('#bedroom_fanlight_0').addClass('state-on'); 
-      $.getJSON(url, data, function (res) {
-        console.log(res);
-       });
-      });
-      $('#bedroom_fanlight_1').on('click', function () {
-      var data = {device: 'Bedroom Fan', 'brightness': 1}; 
-      $('#bedroom_fanlight_1').addClass('state-on'); 
-      $.getJSON(url, data, function (res) {
-        console.log(res);
-       });
-      });
-      $('#bedroom_fanlight_9').on('click', function () {
-      var data = {device: 'Bedroom Fan', 'brightness': 9}; 
-      $('#bedroom_fanlight_9').addClass('state-on'); 
-      $.getJSON(url, data, function (res) {
-        console.log(res);
-       });
-      });
-
-     
-     
-    }
-   );
   </script>
 </html>     
