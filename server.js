@@ -56,7 +56,7 @@ function handler (req, res) {
 
   if (stuff === '') {
     serverStaticFile('index.html', res);
-  } else if (stuff.indexOf('favicon') > -1) {
+  } else if ((stuff.indexOf('favicon') > -1) || (stuff.indexOf('images') > -1)){
     serverStaticFile(stuff, res);
   } else {
     var params = extractUrlParams(stuff);

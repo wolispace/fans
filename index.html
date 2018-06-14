@@ -13,33 +13,54 @@
     color: darkslategrey;
    }
 
-   .button-group {
-    padding-left: 10px;
+   .room-group {
+     float:left;
+     padding: 0px 2px;
+     text-align:center;
+     margin: 5px 3px;
    }
-
-   label {
+   .part-group {
+     float:left;
+     text-align:center;
+   }
+ 
+   legend {
     font-weight: bold;
-    font-size: 120%;
+    font-size: 110%;
     color: darkslategrey;
    }
 
-   button {
+   .button {
     border-radius: 5px;
     padding: 5px;
     font-weight: bold;
     font-size: 150%;
     margin: 3px;
+    width:90%
+   }
+   .button-steps {
+     width: 100%;
    }
 
    .isoff {
     border:3px solid maroon;
     background: lightcoral;
+    border-radius: 5px 5px 15px 15px;
+    height:47px;
    }
 
    .ison {
+    border: 3px solid darkorange;
+    background: palegoldenrod;
+    padding: 0px;
+    width: 47px;
+    font-size:100%;
+   }
+   .ismax {
     border:3px solid darkgreen;
     background: lightgreen;
-   }
+    border-radius: 15px 15px 5px 5px;
+   }   
 
   </style>
  </head>
@@ -54,38 +75,61 @@
 
      var rooms = {
       'Bedroom' : ['Fan', 'Light', 'Lamp'],
-      'Living Room' : ['Fan', 'Light', 'Lamp'],
       'Kitchen' : ['Lamp'],
       'Hallway' : ['Lamp'],
-      'Green Room' : ['Fan', 'Light'] 
+      'Green Room' : ['Fan', 'Light'], 
+      'Living Room' : ['Fan', 'Light', 'Lamp'],
      }
 
-     var steps = {Light: [0, 1, 9], Fan: [0, 1, 2, 3], Lamp: [0, 50, 100]};
-     var stepLabels = {0: 'Off', 1: 'Low', 2: 'Med', 3: 'High', 9: 'High', 10: 'Low', 50: 'Med', 100: 'High'};
+     var steps = {Light: [9, 1, 0], Fan: [3, 2, 0], Lamp: [100, 50, 0]};
+     var stepLabels = {0: 'Off', 1: 'Lo', 2: 'Lo', 3: 'Hi', 9: 'Hi', 50: 'Lo', 100: 'Hi'};
+
+     var stepLoop = {Light: {min: 0, add: 1, max: 9}, Fan: {min: 0, add: 1, max: 3}, Lamp: {min: 0, add: 10, max: 100}};
 
      Object.keys(rooms).forEach( function (roomName) {
-      var html = '<h2>' + roomName + '</h2>'; 
-      $('body').append(html);
+      var html = '<fieldset class="room-group"><legend>' + roomName + '</legend>'; 
 
       rooms[roomName].forEach( function (part) {
-       html = '&nbsp;&nbsp;';
-       $('body').append(html);
+       html += '<div class="part-group">';
        steps[part].forEach( function (step) {
         var id = roomName.replace(' ', '_') + '-' + part + '-' + step;
         var state = (step === 0) ? 'isoff' : 'ison';
-        html = '<button type="button" id="'+id+'" class="'+state+'">' + stepLabels[step] + '</button>'; 
-        $('body').append(html);
-        var data = {room: roomName, part: part, state: step};
-        $('#' + id).on('click', function() {
-         $.getJSON(url, data, function (res) {
-          console.log(res);
-         });
-        });
+        state = (stepLabels[step] === 'Hi') ? 'ismax' : state;
+        var buttonImage = (step === 0) ? '<img src=" /images/'+part+'.png" />' : stepLabels[step];
+        if (stepLabels[step] === 'Lo') {
+          html += '<select class="ison button" name="'+roomName+'" part="'+part+'" step="'+step+'" >';
+          var i = 0,
+              loop = stepLoop[part];
+          for (i = loop.min; i <= loop.max; i = i + loop.add) {
+            html += '<option>' + i + '</option>';
+          }  
+          html += '</select><br/>';
+        } else {
+          html += '<button type="button" id="'+id+'" name="'+roomName+'" part="'+part+'" step="'+step+'" class="button '+state+'">';
+          html += buttonImage + '</button><br/>'; 
+
+        }
        });
-       html = '<label>' + part + '</label><br/>';
+       html += '<label>' + part + '</label></div>';
+      });
+      html += '</fieldset>';
        $('body').append(html);
+     });
+
+     $('button').on('click', function() {
+      var data = {room: $(this).attr('name'), part: $(this).attr('part'), state: $(this).attr('step')};
+      $.getJSON(url, data, function (res) {
+      console.log(res);
       });
      });
+
+     $('select').on('change', function() {
+      var data = {room: $(this).attr('name'), part: $(this).attr('part'), state: $(this).val()};
+      $.getJSON(url, data, function (res) {
+      console.log(res);
+      });
+     });
+
     });
 
   </script>
