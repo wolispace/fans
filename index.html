@@ -18,10 +18,13 @@
      padding: 0px 2px;
      text-align:center;
      margin: 5px 3px;
+     border: 0;
+     background-color: snow;
+     box-shadow: 2px 2px 5px #888888;
    }
    .part-group {
      float:left;
-     width: 50px;
+     width: 56px;
      margin: 0 auto;
    }
  
@@ -29,6 +32,7 @@
     font-weight: bold;
     font-size: 110%;
     color: darkslategrey;
+    text-shadow: 1px 1px  white;
    }
 
    .button {
@@ -123,7 +127,8 @@
 
         }
        });
-       html += '<label>' + part + '</label></div>';
+       //html += '<label>' + part + '</label>';
+       html += '</div>';
       });
       html += '</fieldset>';
        $('body').append(html);
