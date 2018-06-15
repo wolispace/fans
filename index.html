@@ -21,7 +21,8 @@
    }
    .part-group {
      float:left;
-     text-align:center;
+     width: 50px;
+     margin: 0 auto;
    }
  
    legend {
@@ -71,7 +72,7 @@
    $('document').ready(
     function () {
      
-     var url = '';
+     var url = 'zzzz';
 
      var rooms = {
       'Bedroom' : ['Fan', 'Light', 'Lamp'],
@@ -81,13 +82,25 @@
       'Living Room' : ['Fan', 'Light', 'Lamp'],
      }
 
+     var splitPos = location.href.lastIndexOf("r=");
+     var roomFilter = '';
+     if (splitPos > 0) {
+       roomFilter = location.href.substring(splitPos + 2).replace('%20', ' ');
+     }   
+
      var steps = {Light: [9, 1, 0], Fan: [3, 2, 0], Lamp: [100, 50, 0]};
      var stepLabels = {0: 'Off', 1: 'Lo', 2: 'Lo', 3: 'Hi', 9: 'Hi', 50: 'Lo', 100: 'Hi'};
 
      var stepLoop = {Light: {min: 0, add: 1, max: 9}, Fan: {min: 0, add: 1, max: 3}, Lamp: {min: 0, add: 10, max: 100}};
 
      Object.keys(rooms).forEach( function (roomName) {
-      var html = '<fieldset class="room-group"><legend>' + roomName + '</legend>'; 
+      var html = '<fieldset class="room-group"><legend>' + roomName + '</legend>';
+      
+      // exclude if not in filter - if filter is set..
+      if (roomFilter && roomFilter.indexOf(roomName) < 0) {
+        rooms[roomName] = [];
+        html = '';
+      }
 
       rooms[roomName].forEach( function (part) {
        html += '<div class="part-group">';

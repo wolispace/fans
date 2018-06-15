@@ -53,14 +53,12 @@ function handler (req, res) {
   var stuff = req.url.substring(1).replace('+', ' ');
   //console.log('[' + stuff + ']');
 
-
-  if (stuff === '') {
+  if (stuff === '' || (stuff.indexOf('r=') > -1) ) {
     serverStaticFile('index.html', res);
   } else if ((stuff.indexOf('favicon') > -1) || (stuff.indexOf('images') > -1)){
     serverStaticFile(stuff, res);
   } else {
     var params = extractUrlParams(stuff);
-
     if (params.part === 'Fan') {
       var device = myFans[params.room + ' Fan'];
       if (device) {
@@ -114,6 +112,12 @@ function serverStaticFile (fileName, res) {
 // splits out params from ?bit=1&bob=thing  = {bit:1, bob='thing'}
 function extractUrlParams (req) {
   // remove the leading ?
+
+  var splitPos = req.lastIndexOf("?");
+  if (splitPos > -1) {
+    req = '/' + req.substring(splitPos + 1);
+  }
+
   var stuff = req.substring(1);
   var bits = stuff.split('&');
   var params = {};
