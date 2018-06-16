@@ -15,24 +15,25 @@
 
    .room-group {
      float:left;
-     padding: 0px 2px;
+     padding: 0 5px 2px 5px;
      text-align:center;
-     margin: 5px 3px;
+     margin: 3px 3px;
      border: 0;
+     border-radius: 5px;
      background-color: snow;
      box-shadow: 2px 2px 5px #888888;
    }
+
    .part-group {
      float:left;
-     width: 56px;
-     margin: 0 auto;
-   }
+     width: 52px;
+    }
  
    legend {
     font-weight: bold;
     font-size: 110%;
-    color: darkslategrey;
-    text-shadow: 1px 1px  white;
+    color: black;
+    text-shadow: 0px 0px 15px grey;
    }
 
    .button {
@@ -93,7 +94,7 @@
      }   
 
      var steps = {Light: [9, 1, 0], Fan: [3, 2, 0], Lamp: [100, 50, 0]};
-     var stepLabels = {0: 'Off', 1: 'Lo', 2: 'Lo', 3: 'Hi', 9: 'Hi', 50: 'Lo', 100: 'Hi'};
+     var stepLabels = {0: 'Off', 1: 'Lo', 2: 'Lo', 3: '&nbsp;', 9: '&nbsp;', 50: 'Lo', 100: '&nbsp;'};
 
      var stepLoop = {Light: {min: 0, add: 1, max: 9}, Fan: {min: 0, add: 1, max: 3}, Lamp: {min: 0, add: 10, max: 100}};
 
@@ -111,7 +112,7 @@
        steps[part].forEach( function (step) {
         var id = roomName.replace(' ', '_') + '-' + part + '-' + step;
         var state = (step === 0) ? 'isoff' : 'ison';
-        state = (stepLabels[step] === 'Hi') ? 'ismax' : state;
+        state = (stepLabels[step] === '&nbsp;') ? 'ismax' : state;
         var buttonImage = (step === 0) ? '<img src=" /images/'+part+'.png" />' : stepLabels[step];
         if (stepLabels[step] === 'Lo') {
           html += '<select class="ison button" name="'+roomName+'" part="'+part+'" step="'+step+'" >';
